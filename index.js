@@ -2,7 +2,19 @@
 const fs = require("fs");
 const data = readData();
 const config = readConfig();
-var generator = require("generate-password");
+const generator = require("generate-password");
+
+init();
+
+function init() {
+  let fileDir = "./files/";
+
+  if (!fs.existsSync(fileDir)) {
+    fs.mkdirSync(fileDir);
+    data = JSON.parse("{}");
+    fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
+  }
+}
 
 function readData() {
   let raw;
