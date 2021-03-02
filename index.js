@@ -48,8 +48,6 @@ function getNewFileName() {
     }
 
     Planned:    Expiry date (Autodelete)
-                Message
-                Multi-Filex
 */
 
 function setFile(_name, _type, _maxd) {
