@@ -25,3 +25,12 @@ Am I allowed to use FastCloud for...
 Yes.
 Use it for whatever you want.
 MIT Licence Baby.
+
+
+
+
+# Setup FastCloud
+1. Clone FastCloud Repo
+2. Edit Config (Optional)
+3. npm start
+4. Have fun
