@@ -32,5 +32,6 @@ MIT Licence Baby.
 # Setup FastCloud
 1. Clone FastCloud Repo
 2. Edit Config (Optional)
-3. npm start
-4. Have fun
+3. npm install
+4. npm start
+5. Have fun
