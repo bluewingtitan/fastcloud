@@ -1,4 +1,4 @@
-# FastCloud
+![# FastCloud](https://raw.githubusercontent.com/bluewingtitan/fastcloud/master/Banner.png)
 
 > FastCloud is a small, very simple and straight forward solution for all your file hosting needs. It's based on node.js and express and written in an hour because I wanted to share a few files in a dynamic way but found other solutions way to complicated to setup (or proprietary) for what I wanted them for.
 
