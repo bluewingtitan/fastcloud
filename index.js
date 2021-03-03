@@ -92,7 +92,6 @@ function htmlify(title, text, goup) {
     '</div><br><div class="container"><h2>' +
     text +
     "</h2></div></div></body></html>";
-  console.log(r);
   return r.replace("NaN", ""); //Not sure where the NaN comes from, but this removes it. TODO: WHY?
 }
 
