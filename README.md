@@ -17,19 +17,20 @@ Features:
 
 - Host Files (Right now everyone can upload, a basic password system will follow.)
 - Download Files (You will get a dynamicly created link once you uploaded a file.)
+- Basic Password before upload (basic plaintext in config, check on server-side, nothing too fancy)
 
 Config:
 
 - max-downloads (42069): The maximum amount a file can be downloaded before deletion.
 - max-size-byte (134217728 = 128MB): The maximum size a uploaded file can have
-- password ("fastcloud is cool"): Unused right now. Will be used for password protecting upload-process.
+- password ("fastcloud is cool"): The password needed to upload. Will not be sent to client side, but compared server-side on upload request.
 
 Upcoming:
 
 - Expiry date (Autodelete)
-- Basic Password before upload (basic plaintext in config, check on server-side, nothing too fancy)
 
-Am I allowed to use FastCloud for...
+
+>Am I allowed to use FastCloud for...
 Yes.
 Use it for whatever you want.
 MIT Licence Baby.
