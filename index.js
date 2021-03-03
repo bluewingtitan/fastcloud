@@ -156,7 +156,10 @@ app.post("/upload", function (req, res) {
       );
   }
 
-  if (req.body.password != config["password"]) {
+  if (
+    req.body.password != config["password"] &&
+    config["password"].length > 0 //Set pw to empty to skip pw check
+  ) {
     return res.send(
       htmlify("Not Allowed!", "Please enter the right password!", false)
     );
