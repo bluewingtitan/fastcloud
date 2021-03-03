@@ -156,6 +156,12 @@ app.post("/upload", function (req, res) {
       );
   }
 
+  if (req.body.password != config["password"]) {
+    return res.send(
+      htmlify("Not Allowed!", "Please enter the right password!", false)
+    );
+  }
+
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   sampleFile = req.files.sampleFile;
 
