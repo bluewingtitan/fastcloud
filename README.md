@@ -1,6 +1,7 @@
 ![# FastCloud](https://raw.githubusercontent.com/bluewingtitan/fastcloud/master/Banner.png)
 
 > FastCloud is a small, very simple and straight forward solution for all your file hosting needs. It's based on node.js and express and written in an hour because I wanted to share a few files in a dynamic way but found other solutions way to complicated to setup (or proprietary) for what I wanted them for.
+> FastCloud is scribbly in nature and not ment to be used in production enviroments but in situations where it's enough to satisfy all needs and anything more complicated wouldn't be worth the extra time to set it up.
 
 FastCloud aims to deliver a simple experience that just works. Nothing too complicated, nothing completely unnecessary. No security or account stuff because it aims for use cases where you just don't need that. There are a lot crazy, feature-rich solutions out there and I will never ever be able to hold up to them.
 Use FastCloud if your needs are simple.
