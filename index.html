@@ -1,59 +1,27 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <title>Fastcloud v1.1</title>
-    <style>
-      body{
-        font-family: Arial, Helvetica, sans-serif;
-        color: #ECEFF4;
-        background-color: #2E3440;
-      }
-      .container{
-        margin: auto;
-        text-align: center;
-        width: 100%;
-        border: 3px solid #ECEFF4;
-        border-radius: 10px;
-        padding: 10px;
-      }
-      input{
-        display:inline-block;
-        padding:0.35em 1.2em;
-        border:0 solid #5E81AC;
-        margin:0 0.3em 0.3em 0;
-        border-radius:0.12em;
-        box-sizing: border-box;
-        text-decoration:none;
-        font-family:'Roboto',sans-serif;
-        font-weight:300;
-        text-align:center;
-        transition: all 0.2s;
-      }
-      #all{
-        margin: 0;
-        width: 50%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
+    <title>Fastcloud</title>
+    <link rel="icon" 
+      type="image/png" 
+      href="./Icon.png">
+    <link rel="stylesheet" href="./index.css">
   </head>
   <body>
     <div id="all">
       <div class="container">
-        <h1>FastCloud</h>
+        <img src="./Banner.png">
       </div>
-  <p></p>
-      <div class="container">
-        <h2>Upload new File</h>
-        <form ref='uploadForm'
-        id='uploadForm'
-        action='http://localhost:33658/upload'
-        method='post'
-        encType="multipart/form-data">
-          <input type="file" name="sampleFile" />
-          <input type='submit' value='Upload!' />
-        </form>
+      <br>
+      <div class="container" id="upload">
+        <h2>Upload new File</h2>
+        <table style="width: 100%;">
+          <form ref='uploadForm' id='uploadForm' action='http://localhost:33658/upload' method='post' encType="multipart/form-data">
+          <tr><td><input type="file" name="sampleFile" /></td></tr>
+          <tr><td>Password <input type="text" name="password" /></td></tr>
+          <tr><td><input type='submit' value='Upload!' /></td></tr>
+          </form>
+        </table>
       </div>
     </div>
   </body>

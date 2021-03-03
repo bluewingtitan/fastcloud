@@ -78,22 +78,27 @@ function deleteFile(_name, _type) {
   fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
 
-function htmlify(text, extraCss) {
-  return (
-    "<html><head><title>Crickets Chirping...</title>" +
-    "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
-    "p{margin-top:50vh;text-align:center;}" +
-    extraCss +
-    "</style>" +
-    "</head><body><p>" +
+function htmlify(title, text, goup) {
+  let r =
+    "<!DOCTYPE html><html><head><title>" +
+    title +
+    '</title><link rel="icon" type="image/png" href="' +
+    (goup == true ? '../Icon.png">' : './Icon.png">') +
+    '<link rel="stylesheet" href="' +
+    (goup == true ? '../index.css">' : './index.css">') +
+    '</head><body><div id="all">' +
+    '<div class="container"> <img src="' +
+    (goup == true ? '../Banner.png">' : './Banner.png">') +
+    '</div><br><div class="container"><h2>' +
     text +
-    "</p></body></html>"
-  );
+    "</h2></div></div></body></html>";
+  console.log(r);
+  return r.replace("NaN", ""); //Not sure where the NaN comes from, but this removes it. TODO: WHY?
 }
 
 //#endregion
 
-//#region Netcode
+//#region 'Netcode'
 const express = require("express");
 const fileUpload = require("express-fileupload");
 const e = require("express");
@@ -101,11 +106,13 @@ const app = express();
 app.use(fileUpload());
 const port = 33658;
 
+app.use(express.static("statics"));
+
 app.get("/", (req, res) => {
   res.sendFile("./index.html", { root: __dirname });
 });
 
-app.get("/file/:name", (req, res) => {
+app.get("/d/:name", (req, res) => {
   let name = req.params.name;
   if (data[name]) {
     //res.sendFile("./files/" + name + data[name].type, { root: __dirname });
@@ -118,16 +125,18 @@ app.get("/file/:name", (req, res) => {
       deleteFile(name, data[name].type);
       res.send(
         htmlify(
+          "Expired!",
           "The File has sadly reached it's maximum amount of downloads and is due to deletion.",
-          ""
+          true
         )
       );
     }
   } else {
     res.send(
       htmlify(
+        "*Sad 404 Noises*",
         "The File sadly does not seem to exist. Maybe it expired or has reached max downloads?",
-        ""
+        true
       )
     );
   }
@@ -139,7 +148,13 @@ app.post("/upload", function (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res
       .status(400)
-      .send(htmlify("No Files to upload appended. Nothing happened.", ""));
+      .send(
+        htmlify(
+          "Crickets Chirping...",
+          "No Files to upload appended. Nothing happened.",
+          false
+        )
+      );
   }
 
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
@@ -149,10 +164,11 @@ app.post("/upload", function (req, res) {
     res.type(".html");
     return res.send(
       htmlify(
+        "2Heavy4Me!",
         "Your file is too big. Your file can be " +
           config["max-size-byte"] / 1024 / 1024 +
           "mb at max.",
-        ""
+        false
       )
     );
   }
@@ -171,17 +187,18 @@ app.post("/upload", function (req, res) {
     if (err) return res.status(500).send(err);
 
     res.type(".html");
-    const url = req.hostname + "/file/" + filename;
-    const relURL = "/file/" + filename;
+    const url = req.hostname + "/d/" + filename;
+    const relURL = "/d/" + filename;
     res.send(
       htmlify(
+        "Uploaded!",
         "File uploaded! Send this link to share the file:<br>" +
           "<a href='" +
           relURL +
           "'>" +
           url +
           "</a>",
-        "a{color: #ECEFF4;}"
+        false
       )
     );
   });
