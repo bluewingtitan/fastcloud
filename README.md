@@ -10,8 +10,8 @@ A simple UI will appear. Choose a File to upload and type in the password (defau
 You will be granted with a link to share. Everyone with this link will be able to directly download the file by just visiting it.
 
 
-FastCloud aims to deliver a simple experience that just works. Nothing too complicated, nothing completely unnecessary. No security or account stuff because it aims for use cases where you just don't need that. There are a lot crazy, feature-rich solutions out there and I will never ever be able to hold up to them.
-Use FastCloud if your needs are simple.
+FastCloud aims to deliver a simple experience that just works. Nothing too complicated, nothing completely unnecessary. No security or account stuff besided a very basic password check, because it aims for use cases where you just don't need it. There are a lot crazy, feature-rich solutions out there and I will never ever be able to hold up to them.
+Use FastCloud if your needs are simple and your scale is small.
 
 Features:
 
