@@ -73,7 +73,7 @@ function setFile(_name, _type, _maxd) {
 }
 
 function deleteFile(_name, _type) {
-  fs.unlinkSync(_name + "." + _type);
+  fs.unlinkSync(__dirname + "/files/" + _name + "." + _type);
   delete data[_name];
   fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
@@ -101,6 +101,16 @@ app.get("/file/:name", (req, res) => {
 
     if (data[name].maxd > 0) {
       res.download(file);
+    } else {
+      res.send(
+        "<html><head><title>Crickets Chirping...</title>" +
+          "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
+          "p{margin-top:50vh;text-align:center;}" +
+          "</style>" +
+          "</head><body><p>" +
+          "The File has sadly reached it's maximum amount of downloads and is due to deletion." +
+          "</p></body></html>"
+      );
     }
 
     if (data[name].maxd < 0) {
@@ -108,7 +118,13 @@ app.get("/file/:name", (req, res) => {
     }
   } else {
     res.send(
-      "The File sadly does not seem to exist. Maybe it expired or has reached max downloads?"
+      "<html><head><title>Crickets Chirping...</title>" +
+        "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
+        "p{margin-top:50vh;text-align:center;}" +
+        "</style>" +
+        "</head><body><p>" +
+        "The File sadly does not seem to exist. Maybe it expired or has reached max downloads?" +
+        "</p></body></html>"
     );
   }
 });
