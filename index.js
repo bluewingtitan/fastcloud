@@ -11,8 +11,7 @@ function init() {
 
   if (!fs.existsSync(fileDir)) {
     fs.mkdirSync(fileDir);
-    data = JSON.parse("{}");
-    fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
+    fs.writeFileSync("files.json", "{}", { encoding: "utf-8" });
   }
 }
 
