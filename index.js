@@ -78,6 +78,19 @@ function deleteFile(_name, _type) {
   fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
 
+function htmlify(text, extraCss) {
+  return (
+    "<html><head><title>Crickets Chirping...</title>" +
+    "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
+    "p{margin-top:50vh;text-align:center;}" +
+    extraCss +
+    "</style>" +
+    "</head><body><p>" +
+    text +
+    "</p></body></html>"
+  );
+}
+
 //#endregion
 
 //#region Netcode
@@ -99,32 +112,23 @@ app.get("/file/:name", (req, res) => {
     const file = `${__dirname}` + "/files/" + name + "." + data[name].type;
     setFile(name, data[name].type, data[name].maxd - 1);
 
-    if (data[name].maxd > 0) {
+    if (data[name].maxd >= 0) {
       res.download(file);
     } else {
-      res.send(
-        "<html><head><title>Crickets Chirping...</title>" +
-          "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
-          "p{margin-top:50vh;text-align:center;}" +
-          "</style>" +
-          "</head><body><p>" +
-          "The File has sadly reached it's maximum amount of downloads and is due to deletion." +
-          "</p></body></html>"
-      );
-    }
-
-    if (data[name].maxd < 0) {
       deleteFile(name, data[name].type);
+      res.send(
+        htmlify(
+          "The File has sadly reached it's maximum amount of downloads and is due to deletion.",
+          ""
+        )
+      );
     }
   } else {
     res.send(
-      "<html><head><title>Crickets Chirping...</title>" +
-        "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
-        "p{margin-top:50vh;text-align:center;}" +
-        "</style>" +
-        "</head><body><p>" +
-        "The File sadly does not seem to exist. Maybe it expired or has reached max downloads?" +
-        "</p></body></html>"
+      htmlify(
+        "The File sadly does not seem to exist. Maybe it expired or has reached max downloads?",
+        ""
+      )
     );
   }
 });
@@ -135,15 +139,7 @@ app.post("/upload", function (req, res) {
   if (!req.files || Object.keys(req.files).length === 0) {
     return res
       .status(400)
-      .send(
-        "<html><head><title>Crickets Chirping...</title>" +
-          "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
-          "p{margin-top:50vh;text-align:center;}" +
-          "</style>" +
-          "</head><body><p>" +
-          "No Files to upload appended. Nothing happened." +
-          "</p></body></html>"
-      );
+      .send(htmlify("No Files to upload appended. Nothing happened.", ""));
   }
 
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
@@ -152,15 +148,12 @@ app.post("/upload", function (req, res) {
   if (sampleFile.size > config["max-size-byte"]) {
     res.type(".html");
     return res.send(
-      "<html><head><title>Error!</title>" +
-        "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
-        "p{margin-top:50vh;text-align:center;}" +
-        "</style>" +
-        "</head><body><p>" +
+      htmlify(
         "Your file is too big. Your file can be " +
-        config["max-size-byte"] / 1024 / 1024 +
-        "mb at max." +
-        "</p></body></html>"
+          config["max-size-byte"] / 1024 / 1024 +
+          "mb at max.",
+        ""
+      )
     );
   }
 
@@ -181,19 +174,15 @@ app.post("/upload", function (req, res) {
     const url = req.hostname + "/file/" + filename;
     const relURL = "/file/" + filename;
     res.send(
-      "<html><head><title>File Uploaded!</title>" +
-        "<style>body{font-family: Arial, Helvetica, sans-serif;color: #ECEFF4;background-color: #2E3440;}" +
-        "p{margin-top:50vh;text-align:center;}" +
-        "a{color: #ECEFF4;}" +
-        "</style>" +
-        "</head><body><p>" +
+      htmlify(
         "File uploaded! Send this link to share the file:<br>" +
-        "<a href='" +
-        relURL +
-        "'>" +
-        url +
-        "</a>" +
-        "</p></body></html>"
+          "<a href='" +
+          relURL +
+          "'>" +
+          url +
+          "</a>",
+        "a{color: #ECEFF4;}"
+      )
     );
   });
 });
