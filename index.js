@@ -122,19 +122,25 @@ app.get("/d/:name", (req, res) => {
   if (data[name]) {
     //res.sendFile("./files/" + name + data[name].type, { root: __dirname });
     const file = `${__dirname}` + "/files/" + name + "." + data[name].type;
-    setFile(name, data[name].type, data[name].maxd - 1);
+    const infiniteDownloads = data[name].maxd == -1;
 
-    if (data[name].maxd >= 0) {
+    if (!infiniteDownloads)
+      setFile(name, data[name].type, data[name].maxd - 1, data[name].expi);
+
+    if (data[name].maxd >= 0 || infiniteDownloads) {
       res.download(file);
     } else {
-      deleteFile(name, data[name].type);
-      res.send(
+      return res.send(
         htmlify(
           "Expired!",
           "The File has sadly reached it's maximum amount of downloads and is due to deletion.",
           true
         )
       );
+    }
+
+    if (data[name].maxd <= 0) {
+      deleteFile(name, data[name].type, false);
     }
   } else {
     res.send(
