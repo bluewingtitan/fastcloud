@@ -238,7 +238,7 @@ app.listen(port, () => {
 
 //#region File Deletion
 
-setInterval(timePurge, 10 * 60 * 1000); //Once every 10 minutes
+setInterval(timePurge, 30 * 60 * 1000); //Once every 30 minutes
 
 function timePurge() {
   let currentTime = Date.now();
