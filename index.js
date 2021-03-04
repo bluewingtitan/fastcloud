@@ -77,7 +77,8 @@ function setFile(_name, _type, _maxd, _expiry) {
 }
 
 function deleteFile(_name, _type, _skipSave) {
-  fs.unlinkSync(__dirname + "/files/" + _name + "." + _type);
+  if (fs.existsSync(__dirname + "/files/" + _name + "." + _type))
+    fs.unlinkSync(__dirname + "/files/" + _name + "." + _type);
   delete data[_name];
   if (!_skipSave)
     fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
