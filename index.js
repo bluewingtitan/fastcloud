@@ -237,20 +237,24 @@ app.listen(port, () => {
 
 //#region File Deletion
 
-setInterval(deleteFiles, 10 * 60 * 1000); //Once every 10 minutes
+setInterval(timePurge, 10 * 60 * 1000); //Once every 10 minutes
 
-function deleteFiles() {
+function timePurge() {
   let currentTime = Date.now();
 
-  for (const [key, e] of Object.entries(data)) {
-    if (e.expi < currentTime) {
-      deleteFile(e.file, e.type, true);
+  try {
+    for (const [key, e] of Object.entries(data)) {
+      if (e.expi < currentTime) {
+        deleteFile(e.file, e.type, true);
+      }
     }
+  } catch {
+    //This mostly exists for the case when there are just no files.
   }
 
   fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
 
-deleteFiles(); //One-Shot at start to make sure very old files get deleted instantly after long waits.
+timePurge(); //One-Shot at start to make sure very old files get deleted instantly after long waits.
 
 //#endregion
