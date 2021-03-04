@@ -3,6 +3,7 @@ const fs = require("fs");
 const data = readData();
 const config = readConfig();
 const generator = require("generate-password");
+const expiryAddition = config["hours-before-expiry"] * 60 * 60 * 1000;
 
 init();
 
@@ -13,6 +14,8 @@ function init() {
     fs.mkdirSync(fileDir);
     fs.writeFileSync("files.json", "{}", { encoding: "utf-8" });
   }
+
+  console.log("Starting fastcloud with expiry of " + expiryAddition + " ms.");
 }
 
 function readData() {
@@ -56,25 +59,28 @@ function getNewFileName() {
         file: name,
         type: type (ending)
         maxd: max-downloads
+        expi: Expiry Date/Time
     }
 
     Planned:    Expiry date (Autodelete)
 */
 
-function setFile(_name, _type, _maxd) {
+function setFile(_name, _type, _maxd, _expiry) {
   data[_name] = {
     file: _name,
     type: _type,
     maxd: _maxd,
+    expi: _expiry,
   };
 
   fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
 
-function deleteFile(_name, _type) {
+function deleteFile(_name, _type, _skipSave) {
   fs.unlinkSync(__dirname + "/files/" + _name + "." + _type);
   delete data[_name];
-  fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
+  if (!_skipSave)
+    fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
 
 function htmlify(title, text, goup) {
@@ -100,6 +106,7 @@ function htmlify(title, text, goup) {
 const express = require("express");
 const fileUpload = require("express-fileupload");
 const e = require("express");
+const { setInterval } = require("timers");
 const app = express();
 app.use(fileUpload());
 const port = 33658;
@@ -187,7 +194,12 @@ app.post("/upload", function (req, res) {
 
   uploadPath = __dirname + "/files/" + filename + "." + filetype;
 
-  setFile(filename, filetype, config["max-downloads"]);
+  setFile(
+    filename,
+    filetype,
+    config["max-downloads"],
+    Date.now() + expiryAddition
+  );
 
   // Use the mv() method to place the file somewhere on your server
   sampleFile.mv(uploadPath, function (err) {
@@ -214,5 +226,25 @@ app.post("/upload", function (req, res) {
 app.listen(port, () => {
   console.log("fastcloud v1.1 listening at http://localhost:" + port);
 });
+
+//#endregion
+
+//#region File Deletion
+
+setInterval(deleteFiles, 10 * 60 * 1000); //Once every 10 minutes
+
+function deleteFiles() {
+  let currentTime = Date.now();
+
+  for (const [key, e] of Object.entries(data)) {
+    if (e.expi < currentTime) {
+      deleteFile(e.file, e.type, true);
+    }
+  }
+
+  fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
+}
+
+deleteFiles(); //One-Shot at start to make sure very old files get deleted instantly after long waits.
 
 //#endregion
