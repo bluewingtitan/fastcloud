@@ -65,9 +65,10 @@ function getNewFileName() {
     Planned:    Expiry date (Autodelete)
 */
 
-function setFile(_name, _type, _maxd, _expiry) {
+function setFile(_name,_oldname, _type, _maxd, _expiry) {
   data[_name] = {
     file: _name,
+    name: _oldname,
     type: _type,
     maxd: _maxd,
     expi: _expiry,
@@ -126,10 +127,10 @@ app.get("/d/:name", (req, res) => {
     const infiniteDownloads = data[name].maxd == -1;
 
     if (!infiniteDownloads)
-      setFile(name, data[name].type, data[name].maxd - 1, data[name].expi);
+      setFile(name, data[name].name, data[name].type, data[name].maxd - 1, data[name].expi);
 
     if (data[name].maxd >= 0 || infiniteDownloads) {
-      res.download(file);
+      res.download(file, data[name].name);
     } else {
       return res.send(
         htmlify(
@@ -203,6 +204,7 @@ app.post("/upload", function (req, res) {
 
   setFile(
     filename,
+    sampleFile.name,
     filetype,
     config["max-downloads"],
     Date.now() + expiryAddition
