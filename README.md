@@ -12,7 +12,7 @@ If you haven't setup port forwarding you will need to add the port into the url,
 
 Features:
 
-- Host Files (Protected by a basic password set in config.)
+- Host Files (Upload is protected by a master-password set in config.)
 - Download Files (You will get a dynamicly created link once you uploaded a file.)
 - Automatic deletion of files based on capped downloads amount and/or expiry time.
 
@@ -20,10 +20,11 @@ Features:
 
 Config ("out-of-the-box"-settings in parenthesis):
 
+- password ("fastcloud is cool"): The password needed to upload. Will not be sent to client side, but compared server-side on upload request. CHANGE THIS!
 - max-downloads (42069): The maximum amount a file can be downloaded before deletion. Set to -1 for infinite downloads.
 - max-size-byte (134217728 = 128MB): The maximum size a uploaded file can have.
-- password ("fastcloud is cool"): The password needed to upload. Will not be sent to client side, but compared server-side on upload request.
 - hours-before-expiry(48): How many hours shall a file survive? The check happens for all files at once every 30 minutes, so this is not exact.
+- style("dark"): Set "light" for lightmode, everything else will result in darkmode.
 
 
 >Am I allowed to use FastCloud for...
@@ -41,7 +42,7 @@ MIT Licence Baby.
 4. npm start
 5. Have fun
 
-Optionaly setup a port forwarding of port 80 to 33658 for a more comfortable experience.
+Setup a port forwarding of port 80 to 33658 for a more comfortable experience for usage over dns.
 
 
 # Reset FastCloud
