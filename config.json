@@ -2,5 +2,6 @@
   "max-downloads": 42069,
   "max-size-byte": 134217728,
   "hours-before-expiry": 48,
-  "password": "fastcloud is cool"
+  "password": "fastcloud is cool",
+  "style": "dark"
 }
