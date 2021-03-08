@@ -24,7 +24,7 @@ Config ("out-of-the-box"-settings in parenthesis):
 - max-downloads (42069): The maximum amount a file can be downloaded before deletion. Set to -1 for infinite downloads.
 - max-size-byte (134217728 = 128MB): The maximum size a uploaded file can have.
 - hours-before-expiry(48): How many hours shall a file survive? The check happens for all files at once every 30 minutes, so this is not exact.
-- style("dark"): Set "light" for lightmode, everything else will result in darkmode.
+- style("dark"): Set "light" for lightmode, "dark" for darkmode. There are "white" and "black" for fully monochromatic styles.
 
 
 >Am I allowed to use FastCloud for...
