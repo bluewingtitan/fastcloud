@@ -18,7 +18,9 @@ function init() {
   }
 
   if(!fs.existsSync('./style/' + config["style"] + '.css')){
-    throw "There is no stylesheet under ./style/" + config["style"] + ".css!";
+    console.log("[fastcloud]: There is no stylesheet under ./style/" + config["style"] + ".css!\n"
+    +"[fastcloud]: Create it or switch to a existing stylesheet via editing the config file.");
+    process.exit(1);
   }
 
   console.log("Starting fastcloud with expiry of " + expiryAddition + " ms.");
@@ -114,6 +116,8 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 const e = require("express");
 const { setInterval } = require("timers");
+const { application } = require("express");
+const processMultipart = require("express-fileupload/lib/processMultipart");
 const app = express();
 app.use(fileUpload());
 const port = 33658;
