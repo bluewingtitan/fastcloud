@@ -4,6 +4,8 @@ const data = readData();
 const config = readConfig();
 const generator = require("generate-password");
 const expiryAddition = config["hours-before-expiry"] * 60 * 60 * 1000;
+const lightmode = config["style"] == "light";
+
 
 init();
 
@@ -86,20 +88,19 @@ function deleteFile(_name, _type, _skipSave) {
 }
 
 function htmlify(title, text, goup) {
-  let r =
+  return(
     "<!DOCTYPE html><html><head><title>" +
     title +
     '</title><link rel="icon" type="image/png" href="' +
     (goup == true ? '../Icon.png">' : './Icon.png">') +
     '<link rel="stylesheet" href="' +
-    (goup == true ? '../index.css">' : './index.css">') +
+    (goup == true ? '../stylesheet">' : './stylesheet">') +
     '</head><body><div id="all">' +
-    '<div class="container"> <img src="' +
+    '<div class="container"><a href="https://github.com/bluewingtitan/fastcloud"><img src="' +
     (goup == true ? '../Banner.png">' : './Banner.png">') +
-    '</div><br><div class="container"><h2>' +
+    '</a></div><br><div class="container"><h2>' +
     text +
-    "</h2></div></div></body></html>";
-  return r.replace("NaN", ""); //Not sure where the NaN comes from, but this removes it. TODO: WHY?
+    "</h2></div></div></body></html>");
 }
 
 //#endregion
@@ -113,10 +114,15 @@ const app = express();
 app.use(fileUpload());
 const port = 33658;
 
+
 app.use(express.static("statics"));
 
 app.get("/", (req, res) => {
   res.sendFile("./index.html", { root: __dirname });
+});
+
+app.get("/stylesheet", (req, res) => {
+  res.sendFile('./style/' + (lightmode? "light.css": "dark.css"), { root: __dirname });
 });
 
 app.get("/d/:name", (req, res) => {
