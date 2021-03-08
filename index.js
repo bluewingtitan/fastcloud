@@ -4,7 +4,7 @@ const data = readData();
 const config = readConfig();
 const generator = require("generate-password");
 const expiryAddition = config["hours-before-expiry"] * 60 * 60 * 1000;
-const lightmode = config["style"] == "light";
+
 
 
 init();
@@ -15,6 +15,10 @@ function init() {
   if (!fs.existsSync(fileDir)) {
     fs.mkdirSync(fileDir);
     fs.writeFileSync("files.json", JSON.stringify({}), { encoding: "utf-8" });
+  }
+
+  if(!fs.existsSync('./style/' + config["style"] + '.css')){
+    throw "There is no stylesheet under ./style/" + config["style"] + ".css!";
   }
 
   console.log("Starting fastcloud with expiry of " + expiryAddition + " ms.");
@@ -122,7 +126,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/stylesheet", (req, res) => {
-  res.sendFile('./style/' + (lightmode? "light.css": "dark.css"), { root: __dirname });
+  res.sendFile('./style/' + config["style"] + ".css", { root: __dirname });
 });
 
 app.get("/d/:name", (req, res) => {
