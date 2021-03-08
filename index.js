@@ -12,7 +12,7 @@ function init() {
 
   if (!fs.existsSync(fileDir)) {
     fs.mkdirSync(fileDir);
-    fs.writeFileSync("files.json", "{}", { encoding: "utf-8" });
+    fs.writeFileSync("files.json", JSON.stringify({}), { encoding: "utf-8" });
   }
 
   console.log("Starting fastcloud with expiry of " + expiryAddition + " ms.");
