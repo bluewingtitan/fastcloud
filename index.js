@@ -7,10 +7,12 @@ const expiryAddition = config["hours-before-expiry"] * 60 * 60 * 1000;
 
 init();
 
+// Initializing all data needed.
 function init() {
   let fileDir = "./files/";
 
   if (!fs.existsSync(fileDir)) {
+    //Setup File Directory if missing
     fs.mkdirSync(fileDir);
     fs.writeFileSync("files.json", "{}", { encoding: "utf-8" });
   }
@@ -18,6 +20,7 @@ function init() {
   console.log("Starting fastcloud with expiry of " + expiryAddition + " ms.");
 }
 
+//Read list of files known
 function readData() {
   let raw;
   if (fs.existsSync("files.json")) {
@@ -28,6 +31,7 @@ function readData() {
   return JSON.parse(raw);
 }
 
+//Read config file
 function readConfig() {
   let raw;
   if (fs.existsSync("config.json")) {
@@ -38,12 +42,14 @@ function readConfig() {
   return JSON.parse(raw);
 }
 
+//Generator for random file names used internally.
 function getNewFileName() {
   let name = generator.generate({
     length: 20,
     numbers: true,
   });
 
+  //Generate until the file is unique
   while (data[name]) {
     name = generator.generate({
       length: 20,
@@ -55,6 +61,7 @@ function getNewFileName() {
 }
 
 /*
+Structure:
     {
         file: name,
         type: type (ending)
@@ -64,7 +71,7 @@ function getNewFileName() {
 
     Planned:    Expiry date (Autodelete)
 */
-
+//Set file inside the file-data list
 function setFile(_name, _type, _maxd, _expiry) {
   data[_name] = {
     file: _name,
@@ -76,6 +83,7 @@ function setFile(_name, _type, _maxd, _expiry) {
   fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
 
+//Delete a file and delete it out of the file-data list
 function deleteFile(_name, _type, _skipSave) {
   if (fs.existsSync(__dirname + "/files/" + _name + "." + _type))
     fs.unlinkSync(__dirname + "/files/" + _name + "." + _type);
@@ -84,6 +92,9 @@ function deleteFile(_name, _type, _skipSave) {
     fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
 
+//Put the string inside the overall html-layout.
+//GoUp should be true if the base url is a level below the current one
+//=> Keep relative link working (Like 127.0.0.1:42069/thing/d)
 function htmlify(title, text, goup) {
   let r =
     "<!DOCTYPE html><html><head><title>" +
@@ -112,25 +123,35 @@ const app = express();
 app.use(fileUpload());
 const port = 33658;
 
+//Make folder statics (Images and css) work more easily
 app.use(express.static("statics"));
 
+//Serve index file
 app.get("/", (req, res) => {
   res.sendFile("./index.html", { root: __dirname });
 });
 
+//Serve hosted file
 app.get("/d/:name", (req, res) => {
   let name = req.params.name;
+
+  //Check if file even exists
   if (data[name]) {
     //res.sendFile("./files/" + name + data[name].type, { root: __dirname });
     const file = `${__dirname}` + "/files/" + name + "." + data[name].type;
+
+    //Infinitely Downloadable files have maxd==1
     const infiniteDownloads = data[name].maxd == -1;
 
     if (!infiniteDownloads)
+      //Only decrease if not infinite
       setFile(name, data[name].type, data[name].maxd - 1, data[name].expi);
 
+    //Only send file if not expired
     if (data[name].maxd >= 0 || infiniteDownloads) {
       res.download(file);
     } else {
+      //Send error
       return res.send(
         htmlify(
           "Expired!",
@@ -141,9 +162,11 @@ app.get("/d/:name", (req, res) => {
     }
 
     if (data[name].maxd <= 0) {
+      //Delete the file if expired
       deleteFile(name, data[name].type, false);
     }
   } else {
+    //If file does not exist
     res.send(
       htmlify(
         "*Sad 404 Noises*",
@@ -154,10 +177,12 @@ app.get("/d/:name", (req, res) => {
   }
 });
 
+//Upload functionality
 app.post("/upload", function (req, res) {
   let sampleFile, uploadPath, filetype, filename;
 
   if (!req.files || Object.keys(req.files).length === 0) {
+    //Check body for files
     return res
       .status(400)
       .send(
@@ -169,6 +194,7 @@ app.post("/upload", function (req, res) {
       );
   }
 
+  //Check if password is right
   if (
     req.body.password != config["password"] &&
     config["password"].length > 0 //Set pw to empty to skip pw check
@@ -181,6 +207,8 @@ app.post("/upload", function (req, res) {
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   sampleFile = req.files.sampleFile;
 
+  //Check if file is too big
+  //If using a reverse proxy check if the max upload limit even is allowing for your file size
   if (sampleFile.size > config["max-size-byte"]) {
     res.type(".html");
     return res.send(
@@ -194,21 +222,24 @@ app.post("/upload", function (req, res) {
     );
   }
 
+  //Beautiful code to get the file ending
   filetype = sampleFile.name.split(".");
   filetype = filetype[filetype.length - 1];
 
-  filename = getNewFileName();
+  filename = getNewFileName(); //Get new name to save the file as
 
+  //File to upload to
   uploadPath = __dirname + "/files/" + filename + "." + filetype;
 
+  //Tell fastcloud that this file exists
   setFile(
     filename,
     filetype,
     config["max-downloads"],
-    Date.now() + expiryAddition
+    Date.now() + expiryAddition //Current Unix-Timecode + ExpirySeconds
   );
 
-  // Use the mv() method to place the file somewhere on your server
+  // using mv() to place the file on the server
   sampleFile.mv(uploadPath, function (err) {
     if (err) return res.status(500).send(err);
 
@@ -230,6 +261,7 @@ app.post("/upload", function (req, res) {
   });
 });
 
+//Start the server
 app.listen(port, () => {
   console.log("fastcloud v1.1 listening at http://localhost:" + port);
 });
@@ -238,8 +270,9 @@ app.listen(port, () => {
 
 //#region File Deletion
 
-setInterval(timePurge, 30 * 60 * 1000); //Once every 30 minutes
+setInterval(timePurge, 30 * 60 * 1000); //Once every 30 minutes -> Accurate enough for FastCloud-UseCases
 
+//Purge files that are too old.
 function timePurge() {
   let currentTime = Date.now();
 
@@ -251,11 +284,13 @@ function timePurge() {
     }
   } catch {
     //This mostly exists for the case when there are just no files.
+    //I could check for that...
+    //I also could do something more valuable in that time.
   }
 
   fs.writeFileSync("files.json", JSON.stringify(data), { encoding: "utf-8" });
 }
 
-timePurge(); //One-Shot at start to make sure very old files get deleted instantly after long waits.
+timePurge(); //One-Shot at start to make sure very old files get deleted instantly after long off-times.
 
 //#endregion
