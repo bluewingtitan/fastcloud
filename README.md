@@ -5,27 +5,26 @@
 
 
 ## How does it work?
-After setup open (your ip/url):33658 (If you haven't forwarded any ports) in your browser.
+After setup open (your ip/url):33658 (If you haven't forwarded the port) in your browser.
 A simple UI will appear. Choose a File to upload and type in the password (default is "fastcloud is cool" without "") and click "Upload!".
 You will be granted with a link to share. Everyone with this link will be able to directly download the file by just visiting it.
-
+If you haven't setup port forwarding you will need to add the port into the url, wasn't able to make this part work.
 
 Features:
 
-- Host Files (Right now everyone can upload, a basic password system will follow.)
+- Host Files (Upload is protected by a master-password set in config.)
 - Download Files (You will get a dynamicly created link once you uploaded a file.)
-- Basic Password before upload (basic plaintext in config, check on server-side, nothing too fancy)
+- Automatic deletion of files based on capped downloads amount and/or expiry time.
 
-Config:
 
-- max-downloads (42069): The maximum amount a file can be downloaded before deletion.
-- max-size-byte (134217728 = 128MB): The maximum size a uploaded file can have
-- password ("fastcloud is cool"): The password needed to upload. Will not be sent to client side, but compared server-side on upload request.
-- hours-before-expiry(48): Unused config, will be used to set a max time files will live. They will get deleted by a simple daemon every 30 minutes.
 
-Upcoming:
+Config ("out-of-the-box"-settings in parenthesis):
 
-- Expiry date (Autodelete)
+- password ("fastcloud is cool"): The password needed to upload. Will not be sent to client side, but compared server-side on upload request. CHANGE THIS!
+- max-downloads (42069): The maximum amount a file can be downloaded before deletion. Set to -1 for infinite downloads.
+- max-size-byte (134217728 = 128MB): The maximum size a uploaded file can have.
+- hours-before-expiry(48): How many hours shall a file survive? The check happens for all files at once every 30 minutes, so this is not exact.
+- style("dark"): Set "light" for lightmode, "dark" for darkmode. There are "white" and "black" for fully monochromatic styles.
 
 
 >Am I allowed to use FastCloud for...
@@ -43,4 +42,11 @@ MIT Licence Baby.
 4. npm start
 5. Have fun
 
-Optionaly setup a port forwarding of port 80 to 33658.
+Setup a port forwarding of port 80 to 33658 for a more comfortable experience for usage over dns.
+
+
+# Reset FastCloud
+STOP FASTCLOUD BEFORE DOING THIS!
+You are able to delete all user-uploaded files known to FastCloud at the moment with the command 'npm run reset' or 'node reset.js' inside the FastCloud directory.
+This will lead to a clean slate without any files left over.
+If you want to do it the manual way: Delete the directory 'files' and replace the content of files.json with a simple '{}' (without '').

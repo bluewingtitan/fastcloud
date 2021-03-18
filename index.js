@@ -5,6 +5,8 @@ const config = readConfig();
 const generator = require("generate-password");
 const expiryAddition = config["hours-before-expiry"] * 60 * 60 * 1000;
 
+
+
 init();
 
 // Initializing all data needed.
@@ -14,7 +16,13 @@ function init() {
   if (!fs.existsSync(fileDir)) {
     //Setup File Directory if missing
     fs.mkdirSync(fileDir);
-    fs.writeFileSync("files.json", "{}", { encoding: "utf-8" });
+    fs.writeFileSync("files.json", JSON.stringify({}), { encoding: "utf-8" });
+  }
+
+  if(!fs.existsSync('./style/' + config["style"] + '.css')){
+    console.log("[fastcloud]: There is no stylesheet under ./style/" + config["style"] + ".css!\n"
+    +"[fastcloud]: Create it or switch to a existing stylesheet via editing the config file.");
+    process.exit(1);
   }
 
   console.log("Starting fastcloud with expiry of " + expiryAddition + " ms.");
@@ -72,9 +80,10 @@ Structure:
     Planned:    Expiry date (Autodelete)
 */
 //Set file inside the file-data list
-function setFile(_name, _type, _maxd, _expiry) {
+function setFile(_name,_oldname, _type, _maxd, _expiry) {
   data[_name] = {
     file: _name,
+    name: _oldname,
     type: _type,
     maxd: _maxd,
     expi: _expiry,
@@ -96,20 +105,19 @@ function deleteFile(_name, _type, _skipSave) {
 //GoUp should be true if the base url is a level below the current one
 //=> Keep relative link working (Like 127.0.0.1:42069/thing/d)
 function htmlify(title, text, goup) {
-  let r =
+  return(
     "<!DOCTYPE html><html><head><title>" +
     title +
     '</title><link rel="icon" type="image/png" href="' +
     (goup == true ? '../Icon.png">' : './Icon.png">') +
     '<link rel="stylesheet" href="' +
-    (goup == true ? '../index.css">' : './index.css">') +
+    (goup == true ? '../stylesheet">' : './stylesheet">') +
     '</head><body><div id="all">' +
-    '<div class="container"> <img src="' +
+    '<div class="container"><a href="https://github.com/bluewingtitan/fastcloud"><img src="' +
     (goup == true ? '../Banner.png">' : './Banner.png">') +
-    '</div><br><div class="container"><h2>' +
+    '</a></div><br><div class="container"><h2>' +
     text +
-    "</h2></div></div></body></html>";
-  return r.replace("NaN", ""); //Not sure where the NaN comes from, but this removes it. TODO: WHY?
+    "</h2></div></div></body></html>");
 }
 
 //#endregion
@@ -119,6 +127,8 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 const e = require("express");
 const { setInterval } = require("timers");
+const { application } = require("express");
+const processMultipart = require("express-fileupload/lib/processMultipart");
 const app = express();
 app.use(fileUpload());
 const port = 33658;
@@ -145,11 +155,11 @@ app.get("/d/:name", (req, res) => {
 
     if (!infiniteDownloads)
       //Only decrease if not infinite
-      setFile(name, data[name].type, data[name].maxd - 1, data[name].expi);
+      setFile(name, data[name].name, data[name].type, data[name].maxd - 1, data[name].expi);
 
     //Only send file if not expired
     if (data[name].maxd >= 0 || infiniteDownloads) {
-      res.download(file);
+      res.download(file, data[name].name);
     } else {
       //Send error
       return res.send(
@@ -234,6 +244,7 @@ app.post("/upload", function (req, res) {
   //Tell fastcloud that this file exists
   setFile(
     filename,
+    sampleFile.name,
     filetype,
     config["max-downloads"],
     Date.now() + expiryAddition //Current Unix-Timecode + ExpirySeconds

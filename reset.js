@@ -8,7 +8,7 @@ function readData() {
   if (fs.existsSync("files.json")) {
     raw = fs.readFileSync("files.json");
   } else {
-    raw = "{}";
+    raw = {};
   }
   return JSON.parse(raw);
 }
@@ -20,7 +20,7 @@ function deleteFiles() {
     deleteFile(e.file, e.type, true);
   }
 
-  fs.writeFileSync("files.json", JSON.stringify("{}"), { encoding: "utf-8" });
+  fs.writeFileSync("files.json", JSON.stringify({}), { encoding: "utf-8" });
   console.log(
     "Deleted all files known. Delete all left over files in ./files if there are any."
   );
