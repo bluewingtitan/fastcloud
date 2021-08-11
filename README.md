@@ -1,8 +1,11 @@
 ![# FastCloud](https://raw.githubusercontent.com/bluewingtitan/fastcloud/master/statics/Banner.png)
 
-> FastCloud is a small, very simple and straight forward solution for all your file sharing needs. It's based on node.js and express because I wanted to share a few files in a dynamic way but found other solutions way too complicated to setup (or proprietary) for what I wanted them for.
-> FastCloud is scribbly in nature and not ment to be used in production enviroments but in situations where it's enough to satisfy all needs and anything more complicated wouldn't be worth the extra time to set it up. Simple, nothing overly complicated, aiming for 'it just works'. Use FastCloud if your needs are simple and your scale is small.
+⚠️ **DON'T USE FastCloud IN PRODUCTIVE ENVIROMENTS.** I wasn't able to break it, but I won't gurantee for absolute safety and uptime.
+I am using it for my personal quick file sharing needs (cat pictures and some of my music). That's what I have intended it for. Time efficient and personal filesharing.
 
+> FastCloud is a small, very simple and straight forward solution for all your file sharing needs. It's based on node.js and express because I wanted to share a few files in a dynamic way but found other solutions way too complicated to setup (or proprietary) for what I wanted them for.
+
+> FastCloud was inspired by Firefox Send, the most straight forward file sharing experience I ever had, that sadly got discontinued.
 
 ## How does it work?
 After setup open (your ip/url):33658 (If you haven't forwarded the port) in your browser.
