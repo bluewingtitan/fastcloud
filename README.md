@@ -1,24 +1,24 @@
 ![# FastCloud](https://raw.githubusercontent.com/bluewingtitan/fastcloud/master/statics/Banner.png)
 
-⚠️ **DON'T USE FastCloud IN PRODUCTIVE ENVIROMENTS.** I wasn't able to break it, but I won't gurantee for absolute safety and uptime.
-
-I am using it for my personal quick file sharing needs (cat pictures and some of my music). That's what I have intended it for. Time efficient and personal filesharing.
+⚠️ **I tested fastcloud a lot, but won't gurantee for safety or reliability.**
 
 > FastCloud is a small, very simple and straight forward solution for all your file sharing needs. It's based on node.js and express because I wanted to share a few files in a dynamic way but found other solutions way too complicated to setup (or proprietary) for what I wanted them for.
 
 > FastCloud was inspired by Firefox Send, the most straight forward file sharing experience I ever had, that sadly got discontinued.
 
 ## How does it work?
-After setup open (your ip/url):33658 (If you haven't forwarded the port) in your browser.
-A simple UI will appear. Choose a File to upload and type in the password (default is "fastcloud is cool" without "") and click "Upload!".
+After setup, open (your ip/url):33658 in your browser.
+Choose a File to upload and type in the password (default is "fastcloud is cool" without "") and click "Upload!".
 You will be granted with a link to share. Everyone with this link will be able to directly download the file by just visiting it.
-If you haven't setup port forwarding you will need to add the port into the url, wasn't able to make this part work.
+If you haven't setup port forwarding to port 80, you may need to add the port into the url, wasn't able to make this part work.
 
 Features:
 
 - Host Files (Upload is protected by a master-password set in config.)
+- Download Preview Pages
 - Download Files (You will get a dynamicly created link once you uploaded a file.)
 - Automatic deletion of files based on capped downloads amount and/or expiry time.
+- Dynamic Theming
 
 
 
@@ -31,7 +31,7 @@ Config ("out-of-the-box"-settings in parenthesis):
 - style("dark"): Set "light" for lightmode, "dark" for darkmode. There are "white" and "black" for fully monochromatic styles.
 
 
->Am I allowed to use FastCloud for...
+> Am I allowed to use FastCloud for...
 Yes.
 Use it for whatever you want.
 MIT Licence Baby.
