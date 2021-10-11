@@ -105,16 +105,16 @@ function deleteFile(_name, _type, _skipSave) {
 //GoUp should be true if the base url is a level below the current one
 //=> Keep relative link working (Like 127.0.0.1:42069/thing/d)
 function htmlify(title, text, goup) {
+  let rel = goup? "../" : "./"
   return(
     "<!DOCTYPE html><html><head><title>" +
     title +
     '</title><link rel="icon" type="image/png" href="' +
-    (goup == true ? '../Icon.png">' : './Icon.png">') +
+    (rel + 'Icon.png">') +
     '<link rel="stylesheet" href="' +
-    (goup == true ? '../stylesheet">' : './stylesheet">') +
+    (rel + 'stylesheet">') +
     '</head><body><div id="all">' +
-    '<div class="container"><a href="https://github.com/bluewingtitan/fastcloud"><img src="' +
-    (goup == true ? '../Banner.png">' : './Banner.png">') +
+    '<div class="container"><a href="https://github.com/bluewingtitan/fastcloud"><img>' +
     '</a></div><br><div class="container"><h2>' +
     text +
     "</h2></div></div></body></html>");
@@ -140,6 +140,30 @@ app.use(express.static("statics"));
 app.get("/", (req, res) => {
   res.sendFile("./index.html", { root: __dirname });
 });
+
+
+app.get("/f/:name", (req, res) => {
+  let name = req.params.name;
+  if(data[name]){
+    let d = data[name];
+    res.send(htmlify(
+      "Your download is ready!",
+      'File "' + d.name +'" is ready!</h2>' +
+      '<h2><a href="../d/' + name + '">Download</a>',
+      true
+    ))
+  } else {
+    //If file does not exist
+    res.send(
+      htmlify(
+        "*Sad 404 Noises*",
+        "The File sadly does not seem to exist. Maybe it expired or has reached max downloads?",
+        true
+      )
+    );
+  }
+})
+
 
 //Serve hosted file
 app.get("/d/:name", (req, res) => {
@@ -185,6 +209,10 @@ app.get("/d/:name", (req, res) => {
       )
     );
   }
+});
+
+app.get("/stylesheet", (req, res) => {
+  res.sendFile('./style/' + config["style"] + ".css", { root: __dirname });
 });
 
 //Upload functionality
@@ -255,8 +283,9 @@ app.post("/upload", function (req, res) {
     if (err) return res.status(500).send(err);
 
     res.type(".html");
-    const url = req.hostname + "/d/" + filename;
-    const relURL = "/d/" + filename;
+    const url = req.hostname;
+    const relURL = "/f/" + filename;
+    const directRelURL = "/d/" + filename;
     res.send(
       htmlify(
         "Uploaded!",
@@ -264,8 +293,8 @@ app.post("/upload", function (req, res) {
           "<a href='" +
           relURL +
           "'>" +
-          url +
-          "</a>",
+          url + relURL +
+          "</a><br/><h3>(or <a href='" + directRelURL + "'>" + url + directRelURL + "</a> for a direct download)</h3>",
         false
       )
     );
@@ -274,7 +303,7 @@ app.post("/upload", function (req, res) {
 
 //Start the server
 app.listen(port, () => {
-  console.log("fastcloud v1.1 listening at http://localhost:" + port);
+  console.log("fastcloud v1.5 listening at http://localhost:" + port);
 });
 
 //#endregion

@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Fastcloud</title>
-    <link rel="icon" 
-      type="image/png" 
-      href="./Icon.png">
-    <link rel="stylesheet" href="./stylesheet">
-  </head>
-  <body>
-    <div id="all">
-      <div class="container">
-        <a href="https://github.com/bluewingtitan/fastcloud"><img src="./Banner.png"></a>
-      </div>
-      <br>
-      <div class="container" id="upload">
-        <h2>Upload new File</h2>
-        <table style="width: 100%;">
-          <form ref='uploadForm' id='uploadForm' action='./upload' method='post' encType="multipart/form-data">
-          <tr><td><input type="file" name="sampleFile" /></td></tr>
-          <tr><td><input type="text" name="password" placeholder="Password"/></td></tr>
-          <tr><td><input type='submit' value='Upload!' /></td></tr>
-          </form>
-        </table>
-      </div>
+
+<head>
+  <title>Fastcloud</title>
+  <link rel="icon" type="image/png" href="./Icon.png">
+  <link rel="stylesheet" href="./stylesheet">
+</head>
+
+<body>
+  <div id="all">
+    <div class="container">
+      <a href="https://github.com/bluewingtitan/fastcloud"><img></a>
     </div>
-  </body>
+    <br>
+    <div class="container" id="upload">
+      <h2>Upload new File</h2>
+      <table style="width: 100%;">
+        <form ref='uploadForm' id='uploadForm' action='./upload' method='post' encType="multipart/form-data">
+          <tr>
+            <td><input type="file" name="sampleFile" /></td>
+          </tr>
+          <tr>
+            <td><input type="text" name="password" placeholder="Password" /></td>
+          </tr>
+          <tr>
+            <td><input type='submit' value='Upload!' /></td>
+          </tr>
+        </form>
+      </table>
+    </div>
+  </div>
+</body>
+
 </html>

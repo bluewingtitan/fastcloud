@@ -46,8 +46,13 @@ h2 {
   box-shadow: inset 0px 0px 10px #4c566a;
 }
 img {
+  content:url("./banner_dark.png");
   width: 100%;
 }
 a {
   color: #eceff4;
+}
+
+.no-decoration{
+  text-decoration: none;
 }

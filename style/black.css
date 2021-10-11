@@ -46,6 +46,7 @@ body {
     border-radius: 20px;
   }
   img {
+    content:url("./banner_dark.png");
     width: 100%;
   }
   a {

@@ -46,6 +46,7 @@ h2 {
   box-shadow: inset 0px 0px 10px #eceff4;
 }
 img {
+  content:url("./banner_light.png");
   width: 100%;
 }
 a {
