@@ -10,7 +10,7 @@
 After setup, open (your ip/url):33658 in your browser.
 Choose a File to upload and type in the password (default is "fastcloud is cool" without "") and click "Upload!".
 You will be granted with a link to share. Everyone with this link will be able to directly download the file by just visiting it.
-If you haven't setup port forwarding to port 80, you may need to add the port into the url, wasn't able to make this part work.
+If you are just running it as a local server w/o any nginx or apache2 or ... in front, you'll need to add the port to the url/ip of the download link.
 
 Features:
 
@@ -27,26 +27,26 @@ Config ("out-of-the-box"-settings in parenthesis):
 - password ("fastcloud is cool"): The password needed to upload. Will not be sent to client side, but compared server-side on upload request. CHANGE THIS!
 - max-downloads (42069): The maximum amount a file can be downloaded before deletion. Set to -1 for infinite downloads.
 - max-size-byte (134217728 = 128MB): The maximum size a uploaded file can have.
-- hours-before-expiry(48): How many hours shall a file survive? The check happens for all files at once every 30 minutes, so this is not exact.
-- style("dark"): Set "light" for lightmode, "dark" for darkmode. There are "white" and "black" for fully monochromatic styles.
+- hours-before-expiry(48): How many hours shall a file survive? The check happens for all files, once every 30 minutes, so this is not exact.
+- style("dark"): Set "light" for lightmode, "dark" for darkmode. There are "white" and "black" for monochromatic styles.
 
 
 > Am I allowed to use FastCloud for...
 Yes.
-Use it for whatever you want.
-MIT Licence Baby.
+Use it for whatever you want, on your own risk.
+MIT-License, baby.
 
 
 
 
 # Setup FastCloud
 1. Clone FastCloud Repo
-2. Edit Config (Optional)
+2. Edit Config (CHANGE THE DEFAULT PASSWORD!)
 3. npm install
 4. npm start
 5. Have fun
 
-Setup a port forwarding of port 80 to 33658 for a more comfortable experience for usage over dns.
+Setup your nginx or whatever to point to it, running at port 33658.
 
 
 # Reset FastCloud
