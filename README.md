@@ -7,10 +7,9 @@
 > FastCloud was inspired by Firefox Send, the most straight forward file sharing experience I ever had, that sadly got discontinued.
 
 ## How does it work?
-After setup, open (your ip/url):33658 in your browser.
+After setup, open the adress it's running under in your browser (port is 33658, setup your reverse proxy to point at it for ease of use).
 Choose a File to upload and type in the password (default is "fastcloud is cool" without "") and click "Upload!".
-You will be granted with a link to share. Everyone with this link will be able to directly download the file by just visiting it.
-If you are just running it as a local server w/o any nginx or apache2 or ... in front, you'll need to add the port to the url/ip of the download link.
+You will be granted with a link to share. Everyone with this link will be able to download the file by just visiting it.
 
 Features:
 
@@ -46,7 +45,7 @@ MIT-License, baby.
 4. npm start
 5. Have fun
 
-Setup your nginx or whatever to point to it, running at port 33658.
+Setup your reverse proxy (nginx or whatever) to point to it, running at port 33658.
 
 
 # Reset FastCloud
