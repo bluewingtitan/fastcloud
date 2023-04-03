@@ -47,6 +47,8 @@ MIT-License, baby.
 
 Setup your reverse proxy (nginx or whatever) to point to it, running at port 33658.
 
+Make sure to use https in 'production' (don't use in actual production env), as the master password is sent unencrypted in itself (simplicity, fastcloud is a "polished MVP" after all).
+
 
 # Reset FastCloud
 STOP FASTCLOUD BEFORE DOING THIS!
