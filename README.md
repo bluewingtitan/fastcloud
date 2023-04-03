@@ -2,9 +2,9 @@
 
 **Easy File Sharing in 5 minutes.**
 
-> FastCloud is a small, very simple and straight forward solution for all your file sharing needs. It's based on node.js and express because I wanted to share a few files in a dynamic way but found other solutions way too complicated to setup (or proprietary) for what I wanted them for.
+> FastCloud is a small, very simple and straight forward solution for your file sharing needs. It's based on node.js and express and allows for files in a fast and easy way. I only found solutions that were way too complicated to setup (or proprietary) for what I wanted them for, so I created FastCloud.
 
-> FastCloud was inspired by Firefox Send, the most straight forward file sharing experience I ever had, that sadly got discontinued.
+> FastCloud is inspired by Firefox Send, the most straight forward file sharing experience I ever had, that sadly got discontinued.
 
 ## How does it work?
 After setup, open the adress it's running under in your browser (port is 33658, setup your reverse proxy to point at it for ease of use).
