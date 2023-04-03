@@ -1,6 +1,6 @@
 ![# FastCloud](https://raw.githubusercontent.com/bluewingtitan/fastcloud/master/statics/Banner.png)
 
-⚠️ **I tested fastcloud a lot, but won't gurantee for safety or reliability.**
+**Easy File Sharing in 5 minutes.**
 
 > FastCloud is a small, very simple and straight forward solution for all your file sharing needs. It's based on node.js and express because I wanted to share a few files in a dynamic way but found other solutions way too complicated to setup (or proprietary) for what I wanted them for.
 
