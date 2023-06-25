@@ -47,11 +47,10 @@ MIT-License, baby.
 
 Setup your reverse proxy (nginx or whatever) to point to it, running at port 33658.
 
-Make sure to use https in 'production' (don't use in actual production env), as the master password is sent unencrypted in itself (simplicity, fastcloud is a "polished MVP" after all).
-
+Make sure to use https in 'production' to send the password encrypted.
 
 # Reset FastCloud
-STOP FASTCLOUD BEFORE DOING THIS!
+STOP THE FASTCLOUD PROCESS BEFORE DOING THIS!
 You are able to delete all user-uploaded files known to FastCloud at the moment with the command 'npm run reset' or 'node reset.js' inside the FastCloud directory.
 This will lead to a clean slate without any files left over.
 If you want to do it the manual way: Delete the directory 'files' and replace the content of files.json with a simple '{}' (without '').
