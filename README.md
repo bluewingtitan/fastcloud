@@ -24,9 +24,9 @@ Features:
 Config ("out-of-the-box"-settings in parenthesis):
 
 - password ("fastcloud is cool"): The password needed to upload. CHANGE THIS!
-- max-downloads (42069): The maximum amount a file can be downloaded before deletion. -1 for infinite downloads.
+- max-downloads (-1): The maximum amount a file can be downloaded before deletion. -1 for infinite downloads.
 - max-size-byte (134217728 = 128MB): The maximum size a uploaded file can have.
-- hours-before-expiry(48): How many hours shall a file survive? The check happens for all files, once every 30 minutes, so this is not exact.
+- hours-before-expiry(48): How many hours shall a file survive? -1 for infinite time.
 - style("dark"): Set "light" for lightmode, "dark" for darkmode. There are "white" and "black" for monochromatic styles.
 
 
